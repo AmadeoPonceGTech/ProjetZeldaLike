@@ -13,7 +13,10 @@ void PotionDMG::draw(RenderWindow& game)
 
 void PotionDMG::itmget()
 {
-	activePotDMG = false;
+	if (activePotDMG)
+	{
+		activePotDMG = false;
+	}
 }
 
 void PotionDMG::itemEffect(Player& player_)
@@ -21,9 +24,12 @@ void PotionDMG::itemEffect(Player& player_)
 	FloatRect playerbounds = player_.getSprite().getGlobalBounds();
 	FloatRect itembound = potDMG.getGlobalBounds();
 
-	if (playerbounds.intersects(itembound))
+	if (playerbounds.intersects(itembound) && activePotDMG)
 	{
-		activePotDMG = false;
 		player_.usePowerUp();
+		player_.checkPowerup();
+		activePotDMG = false;
 	}
 }
+
+

@@ -8,7 +8,7 @@ public:
 	Sprite potions;
 	Texture potTex;
 	Potion(Vector2f pos) : ItemEntity(pos) {
-		if (!potTex.loadFromFile("assets/vie.png")) {
+		if (!potTex.loadFromFile("assets/pp_vie.png")) {
 			cout << "Erreur de chargement de la texture!" << endl;
 		}
 		potions.setPosition(pos);

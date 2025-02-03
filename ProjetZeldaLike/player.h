@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <chrono>
 
 #include "Entity.h"
 
@@ -46,8 +47,10 @@ public:
 
 	void draw(RenderWindow& window, View& view);
 
-	bool buff = true;
+	chrono::high_resolution_clock::time_point buffstart;
+	bool buff = false;
 	void usePowerUp();
+	void checkPowerup();
 	void update(float deltaTime, vector<Enemy*> p);
 
 	Sprite& getSprite();

@@ -12,11 +12,22 @@ void Potion::draw(RenderWindow& game)
 
 void Potion::itmget()
 {
-	activePot = false;
+	if (activePot)
+	{
+		activePot = false;
+	}
 }
 
-void Potion::itemEffect(Player& player_)
+void Potion::itemEffect(Player& player_) 
 {
+	FloatRect playerbounds = player_.getSprite().getGlobalBounds();
+	FloatRect itembound = potions.getGlobalBounds();
+
+	if (playerbounds.intersects(itembound) && activePot)
+	{
+		player_.setHealth(10);
+		activePot = false;
+	}
 }
 
 

@@ -189,10 +189,28 @@ void Player::attack(float deltaTime, vector<Enemy*> ennemy)
 
 void Player::usePowerUp()
 {
+    if (!buff)
+    {
+        buff = true;
+        buffstart = chrono::high_resolution_clock::now();
+        setDamage(20);
+        cout << "test";
+    }
+}
+
+void Player::checkPowerup()
+{
     if (buff)
     {
-        setDamage(3);
         sprite.setColor(Color::Blue);
+        auto tempsActuel = chrono::high_resolution_clock::now();
+        chrono::duration<float> deltaTemps = tempsActuel - buffstart;
+        if (deltaTemps.count() >= 3.0f)
+        {
+            buff = false;
+            setDamage(5);
+            cout << "fin";
+        }
     }
 }
 
