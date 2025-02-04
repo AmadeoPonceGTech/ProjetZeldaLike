@@ -10,6 +10,9 @@ public:
 	float realOrientation = 0;
 	float time = 0;
 
+	Sprite autoAimSprite;
+	Texture autoAimTexture;
+
 	BossBullet(int h, int d, float s, Vector2f p, float o);
 
 	void update(float deltaTime, Player& p);

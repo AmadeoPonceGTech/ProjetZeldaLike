@@ -4,6 +4,17 @@
 BossBullet::BossBullet(int h, int d, float s, Vector2f p, float o) : Entity(h, d, s, p)
 {
 	realOrientation = o;
+    try {
+        if (!autoAimTexture.loadFromFile("Assets/Boss/chaser.png")) {
+            throw std::runtime_error("Erreur de chargement de la texture (player walk)");
+        }
+    }
+    catch (const exception& e) {
+        cout << "Probleme detecte : " << e.what() << endl;
+    }
+
+    autoAimSprite.setTexture(autoAimTexture);
+    autoAimSprite.setScale(Vector2f(1, 1));
 }
 
 void BossBullet::update(float deltaTime, Player& p)
@@ -29,12 +40,11 @@ void BossBullet::update(float deltaTime, Player& p)
 
 void BossBullet::draw(RenderWindow& window, View& view)
 {
-	CircleShape circle(10);
-	circle.setPosition(pos);
+	autoAimSprite.setPosition(pos);
     if (time > 5000)
     {
-        circle.setFillColor(Color(255, 255, 255, 255 - ((time - 5000) / 2000 * 255)));
+        autoAimSprite.setColor(Color(255, 255, 255, 255 - ((time - 5000) / 2000 * 255)));
     }
 
-	window.draw(circle);
+	window.draw(autoAimSprite);
 }

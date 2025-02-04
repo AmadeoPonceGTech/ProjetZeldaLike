@@ -23,6 +23,8 @@ void Game::run()
 	enemyList.push_back(new Chaser(100, 1, 0.20f, Vector2f(200, 200)));
 	enemyList.push_back(new Patroler(100, 1, 0.2f, Vector2f(500, 400), 1));
 	Boss boss(1000, 10, 0.3f, Vector2f(300, 300));
+	BossBullet bullet(5, 5, 5, { 50,50 }, 10);
+
 
 
 
@@ -43,8 +45,8 @@ void Game::run()
 		mapp.eDonj(player, view, currentMap);
 		mapp.DrawM(player, view, currentMap);
 
-	/*	pot.draw(mapp.window);
-		pot.itemEffect(player);*/
+		//pot.draw(mapp.window);
+		//pot.itemEffect(player);
 
 		window.clear();
 		player.update(deltaTime, enemyList);
@@ -60,7 +62,7 @@ void Game::run()
 		}
 		enemyList = enemyListTemp;
 
-		boss.update(deltaTime, player);
+
 
 		mapp.eDonj(player,view,currentMap);
 		mapp.DrawM(player, view,currentMap);
@@ -76,8 +78,12 @@ void Game::run()
 			e->draw(window, view);
 		}
 		boss.draw(window, view);
+		boss.update(deltaTime, player);
+		bullet.draw(window, view);
+		bullet.update(deltaTime, player);
+	
+
 		
 		window.display();
-		cout << player.getPos().x << ", " << player.getPos().y << endl;
 	}
 }

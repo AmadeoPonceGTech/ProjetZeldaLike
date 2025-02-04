@@ -5,7 +5,41 @@
 
 Boss::Boss(int h, int d, float s, Vector2f p) : Entity(h, d, s, p)
 {
-	srand(time(NULL));
+	try {
+		if (!bossWalk.loadFromFile("Assets/Boss/BossAnimation/pinguin.png")) {
+			throw std::runtime_error("Erreur de chargement de la texture (player walk)");
+		}
+	}
+	catch (const exception& e) {
+		cout << "Probleme detecte : " << e.what() << endl;
+	}
+
+	bossSprite.setTexture(bossWalk);
+	bossSprite.setScale(Vector2f(1, 1));
+}
+
+
+
+void Boss::animationUpdate(float deltaTime)
+{
+	timer += deltaTime;
+
+	
+	if (bossSprite.getTexture() != &bossWalk) {
+		if (!bossWalk.loadFromFile("Assets/Boss/BossAnimation/walk1.png")) {
+			cout << "Erreur de chargement de la texture de marche" << endl;
+		}
+		bossSprite.setTexture(bossWalk); 
+	}
+
+	
+	if (timer > frameDuration) {
+		timer = 0;
+		currentFrame = (currentFrame + 1) % 2;  
+	}
+
+	
+	bossSprite.setTextureRect(IntRect(0, currentFrame * frameHeight, frameWidth, frameHeight));
 }
 
 void Boss::update(float deltaTime, Player& p)
@@ -15,12 +49,11 @@ void Boss::update(float deltaTime, Player& p)
 	{
 		attack1(deltaTime, p);
 	}
-
 	//Attaque tête chercheuses
 	//Attaque rapide demi cercle
 	//Un autre truc
 	move(deltaTime);
-
+	animationUpdate(deltaTime);
 	bulletUpdate(deltaTime, p);
 }
 
@@ -46,17 +79,18 @@ void Boss::attack1(float deltaTime, Player& p)
 
 void Boss::move(float deltaTime)
 {
-	if (canMove)
-	{
-		if (abs(pos.x - targetPosition.x) < 5 && abs(pos.y - targetPosition.y) < 5)
-		{
-			targetPosition = Vector2f(rand() % bossRoomSize.x, rand() % bossRoomSize.y);
-		}
-
-		float angle = atan2(targetPosition.y - pos.y, targetPosition.x - pos.x);
-
-		pos = Vector2f(pos.x + (cos(angle) * deltaTime * speed), pos.y + (sin(angle) * deltaTime * speed));
+	
+	if (abs(pos.x - targetPosition.x) < 5 && abs(pos.y - targetPosition.y) < 5) {
+		
+		targetPosition = Vector2f(rand() % bossRoomSize.x, rand() % bossRoomSize.y);
 	}
+
+	
+	float angle = atan2(targetPosition.y - pos.y, targetPosition.x - pos.x);
+
+	
+	pos = Vector2f(pos.x + cos(angle) * deltaTime * speed, pos.y + sin(angle) * deltaTime * speed);
+	bossSprite.setPosition(pos);
 }
 
 void Boss::bulletUpdate(float deltaTime, Player& p)
@@ -75,9 +109,7 @@ void Boss::bulletUpdate(float deltaTime, Player& p)
 
 void Boss::draw(RenderWindow& window, View& view)
 {
-	RectangleShape rect(Vector2f(30, 30));
-	rect.setPosition(pos);
-	window.draw(rect);
+	window.draw(bossSprite);
 
 	for (auto& b : bossBulletList)
 	{
