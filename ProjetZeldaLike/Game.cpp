@@ -23,7 +23,7 @@ void Game::run()
 	enemyList.push_back(new Chaser(100, 1, 0.20f, Vector2f(200, 200)));
 	enemyList.push_back(new Patroler(100, 1, 0.2f, Vector2f(500, 400)));
 	Boss boss(1000, 10, 0.3f, Vector2f(300, 300));
-	BossBullet bullet(5, 5, { 50,50 }, 10);
+	BossBullet bullet(5, 1, { 50,50 }, 10);
 
 
 

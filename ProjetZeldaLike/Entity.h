@@ -40,5 +40,5 @@ public:
 	void setHealth(int h);
 	int getHealth();
 
-	Sprite getSprite();
+	Sprite& getSprite();
 };

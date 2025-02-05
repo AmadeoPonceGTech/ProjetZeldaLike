@@ -217,11 +217,6 @@ void Player::draw(RenderWindow& window, View& view)
     }
 }
 
-Sprite& Player::getSprite()
-{
-    return sprite;
-}
-
 void Player::setWeaponOrientation()
 {
     if (orientation == 0 || orientation == 90)
@@ -234,3 +229,8 @@ void Player::setWeaponOrientation()
     }
 }
 
+
+Sprite& Player::getSprite()
+{
+    return sprite;
+}

@@ -55,7 +55,9 @@ int Entity::getHealth()
 	return health;
 }
 
-Sprite Entity::getSprite()
+Sprite& Entity::getSprite()
 {
 	return spriteEntity;
 }
+
+

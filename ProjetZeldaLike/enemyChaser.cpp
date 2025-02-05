@@ -57,6 +57,10 @@ void Chaser::movement(float deltaTime, Player& p)
     }
 }
 
+Sprite& Chaser::getSprite()
+{
+    return sprite;
+}
 
 
 

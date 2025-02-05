@@ -19,7 +19,7 @@ public:
 	Clock clockHit;	
 	bool getHit = false;
 
-	RectangleShape sprite;
+	Sprite sprite;
 
 	Patroler(int health, int damage, float s, Vector2f p);
 
@@ -30,4 +30,6 @@ public:
 
 
 	void hitColor();
+
+	Sprite& getSprite();
 };

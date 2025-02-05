@@ -3,7 +3,6 @@
 #include "Entity.h";
 #include "player.h";
 
-class Player;
 
 class Enemy : public Entity
 {
@@ -43,6 +42,8 @@ public:
 
 	void giveStunt(float time);
 	void stuntManager(float deltaTime);
+
+	Sprite& getSprite();
 
 
 };

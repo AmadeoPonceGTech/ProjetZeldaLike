@@ -48,3 +48,8 @@ void BossBullet::draw(RenderWindow& window, View& view)
 
 	window.draw(autoAimSprite);
 }
+
+Sprite& BossBullet::getSprite()
+{
+    return autoAimSprite;
+}

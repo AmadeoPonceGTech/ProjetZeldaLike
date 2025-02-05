@@ -17,4 +17,5 @@ public:
 
 	void update(float deltaTime, Player& p);
 	void draw(RenderWindow& window, View& view) override;
+	Sprite& getSprite();
 };

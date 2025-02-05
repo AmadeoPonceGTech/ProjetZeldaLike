@@ -29,6 +29,8 @@ void Enemy::stuntManager(float deltaTime)
     }
 }
 
+
+
 void Enemy::takeHit(int damage)
 {
     health += -damage;
@@ -108,4 +110,9 @@ void Enemy::attack(float deltaTime, Player& p)
             canMove = false;
         }
     }
+}
+
+Sprite& Enemy::getSprite()
+{
+    return sprite;
 }

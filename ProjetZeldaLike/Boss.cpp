@@ -116,3 +116,8 @@ void Boss::draw(RenderWindow& window, View& view)
 		b.draw(window, view);
 	}
 }
+
+Sprite& Boss::getSprite()
+{
+	return bossSprite;
+}

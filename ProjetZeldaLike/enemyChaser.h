@@ -10,4 +10,5 @@ public:
 	void update(float deltaTime, Player& p) override;
 
 	void movement(float deltaTime, Player& p);
+	Sprite& getSprite();
 };
