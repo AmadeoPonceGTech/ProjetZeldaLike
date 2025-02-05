@@ -43,7 +43,7 @@ public:
 
 	void animationUpdate(float deltaTime);
 	void update(float deltaTime, Player& p);
-	void attack1(float deltaTime, Player& p);
+	//void attack1(float deltaTime, Player& p);
 	void move(float deltaTime);
 
 	void bulletUpdate(float deltaTime, Player& p);

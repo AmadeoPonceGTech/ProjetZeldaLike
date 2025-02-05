@@ -13,15 +13,15 @@ private:
 	bool moveup = true;
 	chrono::steady_clock::time_point lastMove;
 	float timeSinceLastDirectionChange = 0;
-	int intDir;
-public:
 
+public:
+	int intDir = 0;
 	Clock clockHit;	
 	bool getHit = false;
 
 	RectangleShape sprite;
 
-	Patroler(int health, int damage, float s, Vector2f p, int iD);
+	Patroler(int health, int damage, float s, Vector2f p);
 
 	void moveHor3s(float deltaTime);
 	void moveVer3s(float deltaTime);

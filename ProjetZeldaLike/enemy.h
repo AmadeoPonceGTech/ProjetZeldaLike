@@ -32,8 +32,7 @@ public:
 	bool isDead = false;
 	float deadTime = 0;
 
-	Enemy(int health, int damage, float speed, Vector2f pos) : Entity(health, damage, speed, pos) {}
-
+	Enemy(int health, int damage, float speed, Vector2f pos);
 	virtual void update(float deltaTime, Player& p) = 0;
 	void attack(float deltaTime, Player& player_);
 	void animationUpdate(float deltaTime);

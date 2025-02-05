@@ -1,7 +1,7 @@
 ﻿#include "bossBullet.h"
 
 
-BossBullet::BossBullet(int h, int d, float s, Vector2f p, float o) : Entity(h, d, s, p)
+BossBullet::BossBullet(int d, float s, Vector2f p, float o) : Entity(0, d, s, p), realOrientation(o)
 {
 	realOrientation = o;
     try {

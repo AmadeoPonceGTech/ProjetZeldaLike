@@ -2,9 +2,9 @@
 
 using namespace sf;
 
-Entity::Entity(int pv, int dmg,float s, Vector2f p)
+Entity::Entity(int h, int dmg,float s, Vector2f p)
 {
-	health = pv;
+	health = h;
 	damage = dmg;
 	speed = s;
 	pos = p;
@@ -57,5 +57,5 @@ int Entity::getHealth()
 
 Sprite Entity::getSprite()
 {
-	return Sprite();
+	return spriteEntity;
 }

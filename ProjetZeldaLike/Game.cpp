@@ -21,9 +21,9 @@ void Game::run()
 	vector<Enemy*> enemyList;
 	vector<Enemy*> enemyListTemp;
 	enemyList.push_back(new Chaser(100, 1, 0.20f, Vector2f(200, 200)));
-	enemyList.push_back(new Patroler(100, 1, 0.2f, Vector2f(500, 400), 1));
+	enemyList.push_back(new Patroler(100, 1, 0.2f, Vector2f(500, 400)));
 	Boss boss(1000, 10, 0.3f, Vector2f(300, 300));
-	BossBullet bullet(5, 5, 5, { 50,50 }, 10);
+	BossBullet bullet(5, 5, { 50,50 }, 10);
 
 
 
@@ -45,8 +45,6 @@ void Game::run()
 		mapp.eDonj(player, view, currentMap);
 		mapp.DrawM(player, view, currentMap);
 
-		//pot.draw(mapp.window);
-		//pot.itemEffect(player);
 
 		window.clear();
 		player.update(deltaTime, enemyList);

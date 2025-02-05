@@ -1,6 +1,9 @@
 #include "enemy.h"
 
 
+Enemy::Enemy(int health, int damage, float speed, Vector2f pos) : Entity(health, damage, speed, pos) {}
+
+
 void Enemy::giveStunt(float time)
 {
     canMove = false;

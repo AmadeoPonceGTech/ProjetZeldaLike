@@ -3,7 +3,7 @@
 bool touch = false;
 
 
-Patroler::Patroler(int health, int damage, float speed, Vector2f pos, int iD) : Enemy(health, damage, speed, pos)
+Patroler::Patroler(int health, int damage, float speed, Vector2f pos) : Enemy(health, damage, speed, pos)
 {
 	if (!textureWalk.loadFromFile("Assets/Flam/SeparateAnim/Walk.png")) {
 		throw std::runtime_error("Erreur de chargement de la texture (Patroler)");
@@ -18,7 +18,6 @@ Patroler::Patroler(int health, int damage, float speed, Vector2f pos, int iD) : 
 	sprite.setTexture(&textureWalk);
 	sprite.setScale(Vector2f(4, 4));
 	
-	intDir = iD;
 }
 
 void Patroler::update(float deltaTime, Player& p)

@@ -6,8 +6,6 @@
 class Chaser : public Enemy
 {
 public:
-
-
 	Chaser(int health, int damage, float speed, Vector2f pos);
 	void update(float deltaTime, Player& p) override;
 
