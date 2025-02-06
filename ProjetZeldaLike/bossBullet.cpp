@@ -1,16 +1,27 @@
 ﻿#include "bossBullet.h"
 
 
-BossBullet::BossBullet(int h, int d, float s, Vector2f p, float o) : Entity(h, d, s, p)
+BossBullet::BossBullet(int d, float s, Vector2f p, float o) : Entity(0, d, s, p)
 {
-	realOrientation = o;
+    realOrientation = o;
+    try {
+        if (!texturebullet.loadFromFile("Assets/Boss/chaser.png")) {
+            throw std::runtime_error("Erreur de chargement de la texture (chaser.png)");
+        }
+    }
+    catch (const exception& e) {
+        cout << "Probleme detecte : " << e.what() << endl;
+    }
+
+    spritebullet.setTexture(texturebullet);
+    spritebullet.setScale(Vector2f(0.3f, 0.3f));
 }
 
 void BossBullet::update(float deltaTime, Player& p)
 {
     time += deltaTime;
 
-    Vector2f pPos = Vector2f(p.getPos().x + (p.getSprite().getLocalBounds().width/2), p.getPos().y + (p.getSprite().getLocalBounds().height / 2));
+    Vector2f pPos = Vector2f(p.getPos().x + (p.getSprite().getLocalBounds().width / 2), p.getPos().y + (p.getSprite().getLocalBounds().height / 2));
     float targetAngle = atan2(pPos.y - pos.y, pPos.x - pos.x);
 
     float angleDiff = targetAngle - realOrientation;
@@ -24,17 +35,22 @@ void BossBullet::update(float deltaTime, Player& p)
     float dx = cos(realOrientation) * speed * deltaTime;
     float dy = sin(realOrientation) * speed * deltaTime;
     pos = Vector2f(pos.x + dx, pos.y + dy);
+
+    if (spritebullet.getGlobalBounds().intersects(p.getSprite().getGlobalBounds()))
+    {
+        p.setHealth(p.getHealth() - damage);
+    }
+
 }
 
 
 void BossBullet::draw(RenderWindow& window, View& view)
 {
-	CircleShape circle(10);
-	circle.setPosition(pos);
+	spritebullet.setPosition(pos);
     if (time > 5000)
     {
-        circle.setFillColor(Color(255, 255, 255, 255 - ((time - 5000) / 2000 * 255)));
+        spritebullet.setColor(Color(255, 255, 255, 255 - ((time - 5000) / 2000 * 255)));
     }
 
-	window.draw(circle);
+	window.draw(spritebullet);
 }

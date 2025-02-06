@@ -41,52 +41,52 @@ void Boss::animationUpdate(float deltaTime)
 		timer = 0;
 		currentFrame = (currentFrame + 1) % 2;
 	}
-
+	timeSinceLastHit += deltaTime;
+	if (timeSinceLastHit > 1000)
+	{
+		bossSprite.setColor(Color::White);
+	}
 
 	bossSprite.setTextureRect(IntRect(0, currentFrame * frameHeight, frameWidth, frameHeight));
 }
 
 void Boss::update(float deltaTime, Player& p)
 {
-	//timeSinceLastAttack += deltaTime;
-	//if (timeSinceLastAttack > timeBetweenAttacks) 
-	//{
-	//	attack1(deltaTime, p);
-	//}
-	//Attaque tête chercheuses
-	//Attaque rapide demi cercle
-	//Un autre truc
 	move(deltaTime);
+	if (timeSinceLastAttack > timeBetweenAttacks) {
+		attack1(deltaTime, p);
+	}
 	animationUpdate(deltaTime);
 	bulletUpdate(deltaTime, p);
 }
 
-//void Boss::attack1(float deltaTime, Player& p)
-//{
-//	if (bulletAlreadyShotInTheAttack < bulletByAttack)
-//	{
-//		timeSinceLastBulletShot += deltaTime;
-//		if (timeSinceLastBulletShot > timeBetweenBulletShots)
-//		{
-//			timeSinceLastBulletShot = 0;
-//			bulletAlreadyShotInTheAttack += 1;
-//
-//			bossBulletList.push_back(BossBullet(bulletDamage, bulletSpeed, pos, (rand()%int(M_PI*200))/100));
-//		}
-//	}
-//	else
-//	{
-//		bulletAlreadyShotInTheAttack = 0;
-//		timeSinceLastAttack = 0;
-//	}
-//}
+
+void Boss::attack1(float deltaTime, Player& p)
+{
+	if (bulletAlreadyShotInTheAttack < bulletByAttack)
+	{
+		timeSinceLastBulletShot += deltaTime;
+		if (timeSinceLastBulletShot > timeBetweenBulletShots)
+		{
+			timeSinceLastBulletShot = 0;
+			bulletAlreadyShotInTheAttack += 1;
+			
+			bossBulletList.emplace_back(BossBullet(bulletDamage, bulletSpeed, pos, (rand()%int(M_PI*200))/100));
+		}
+	}
+	else
+	{
+		bulletAlreadyShotInTheAttack = 0;
+		timeSinceLastAttack = 0;
+	}
+}
 
 void Boss::move(float deltaTime)
 {
 
 	if (abs(pos.x - targetPosition.x) < 5 && abs(pos.y - targetPosition.y) < 5) {
 
-		targetPosition = Vector2f(rand() % bossRoomSize.x, rand() % bossRoomSize.y);
+		targetPosition = Vector2f((rand() % bossRoomSize.x)+800, (rand() % bossRoomSize.y)+ 1300);
 	}
 
 
@@ -117,6 +117,7 @@ void Boss::draw(RenderWindow& window, View& view)
 
 	for (auto& b : bossBulletList)
 	{
+		b.spritebullet.setTexture(b.texturebullet);
 		b.draw(window, view);
 	}
 }
@@ -124,6 +125,8 @@ void Boss::draw(RenderWindow& window, View& view)
 void Boss::BossHit(int dmg)
 {
 	health -= dmg;
+	bossSprite.setColor(Color::Red);
+	timeSinceLastHit = 0;
 }
 
 
@@ -131,5 +134,4 @@ Sprite& Boss::getSprite()
 {
 	return bossSprite;
 }
-
 

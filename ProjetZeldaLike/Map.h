@@ -9,6 +9,7 @@
 #include<SFML/Audio.hpp>
 #include "Boss.h"
 #include "potionDMG.h"
+#include"potion.h"
 #include "enemy.h"
 #include "EnemyManager.h"
 
@@ -34,9 +35,9 @@ public:
 	void initM(string);
 	void initF();
 	void initT();
-	void DrawM(Player&, View& v, string& currentMap, EnemyManager& enemyManager);
+	void DrawM(Player&, View& v, string& currentMap, EnemyManager& enemyManager,Boss& boss);
 	void initall();
-	void updatemap(View& v, Player& p, EnemyManager& enemyManager);
+	void updatemap(View& v, Player& p, EnemyManager& enemyManager, string& currentMap, Boss& boss);
 	void coliM(Player& p);
 	void coliD(Player& p);
 	void coliKey(Player& p);
@@ -44,7 +45,7 @@ public:
 	void pnjTxt(Player& p);
 	void eDonj(Player& p, View& v, string& currentMap);
 	void DialPnj(Player& p);
-	void coliE(EnemyManager& enemyManager);
+	void coliE(EnemyManager& enemyManager,Boss& boss);
 
 	RenderWindow& window;//ajouter �a dans le game pour appeler la window et commencer la boucle de jeux  Map map; /*map.initM(); while (map.window) {}*/
 	Texture txtArbre, txtSext, txtTour, txtPnj, txtTombe, txtChemin, txtMu, txtS, txtP, txtKeyB, txtTpG, txtTpD, txtPp_dmg, txtPp_vie, txtSd, txtPf, txtMais;
@@ -56,8 +57,10 @@ public:
 	vector<unique_ptr<RectangleShape>>vSol;
 	vector<unique_ptr<RectangleShape>>vPorte;
 	vector<unique_ptr<RectangleShape>>vTp;
+	vector<Potion>vPP;
 	vector<unique_ptr<RectangleShape>>dD;
 	vector<unique_ptr<RectangleShape>>vMurext;
+	vector<Boss>vBoss;
 	//vector <shared_ptr<Patroler>>vE;
 	vector <unique_ptr<RectangleShape>>vPnj;
 	vector <unique_ptr<RectangleShape>>vKey;
