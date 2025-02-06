@@ -2,10 +2,9 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Map.h"
-#include "enemyPatrol.h"
-#include "enemyChaser.h"
-#include "Boss.h"
-#include "potionDMG.h"
+
+#include "EnemyManager.h"
+
 using namespace std;
 using namespace sf;
 
@@ -21,7 +20,6 @@ public:
 	Clock clock;
 	float deltaTime;
 	Game();
-
 
 	void run();
 };

@@ -1,4 +1,5 @@
 #include "Map.h"
+
 Map::Map(RenderWindow& w) : window(w),cMap(false){
 
 };
@@ -87,6 +88,12 @@ void Map::initT() {
 	inetractPnj.setCharacterSize(20);
 	inetractPnj.setFillColor(Color::Red);
 	inetractPnj.setStyle(Text::Bold);
+
+	dialogueAc.setFont(fI);
+	dialogueAc.setCharacterSize(10);
+	dialogueAc.setFillColor(Color::Black);
+	dialogueAc.setStyle(Text::Bold);
+	dialogueAc.setString("Va-t'en d'ici");
 }
 void Map::initall(){
 	initTxt();
@@ -99,6 +106,7 @@ void Map::initM(string fileM) {
 	vMur.clear();
 	vPnj.clear();
 	vTp.clear();
+	utilitaire.clear();
 	vM.clear();
 	ifstream file(fileM);
 	if (!file.is_open()) {
@@ -111,9 +119,9 @@ void Map::initM(string fileM) {
 	file.close();
 	cMap = true;
 }
-void Map::DrawM(Player& p, View& v, string& currentMap) {
+void Map::DrawM(Player& p, View& v, string& currentMap, EnemyManager& enemyManager) {
 	try {
-		if (vM[0].empty()) {
+	if (vM[0].empty()) {
 			throw runtime_error("le fichier texte est vide");
 		}
 	}
@@ -216,9 +224,6 @@ void Map::DrawM(Player& p, View& v, string& currentMap) {
 					vPnj.emplace_back(move(Pnj));
 					break;
 				}
-
-				
-
 				case 'D':
 				{ //tp droit
 					auto solext = make_unique<RectangleShape>(Vector2f(67, 54));
@@ -260,8 +265,6 @@ void Map::DrawM(Player& p, View& v, string& currentMap) {
 				//	soldj->setTexture(&txtSd);
 				//	soldj->setPosition(j * 67, i * 56);
 				//	vSol.emplace_back(move(soldj));
-
-
 				//	auto pp_dmg = make_unique<RectangleShape>(Vector2f(67, 54));
 				//	pp_dmg->setPosition(Vector2f(67 * j, 54 * i));
 				//	pp_dmg->setTexture(&txtPp_dmg);
@@ -269,10 +272,9 @@ void Map::DrawM(Player& p, View& v, string& currentMap) {
 				//	vTp.emplace_back(move(pp_dmg));
 				//	break;
 
-
 				//}
 				case '1':
-				{ //Patroler
+				{ //Patroler verti
 					auto soldj = make_unique<RectangleShape>(Vector2f(67, 56));
 					soldj->setPosition(Vector2f(67 * j, 56 * i));
 					soldj->setTexture(&txtSd);
@@ -281,14 +283,29 @@ void Map::DrawM(Player& p, View& v, string& currentMap) {
 
 
 
-					auto patrol = make_shared<Patroler>(100, 1, 0.20f,Vector2f(67, 56),0);
-					patrol->setPos(Vector2f(j * 67, i * 56));
-					vP.emplace_back(patrol);
+					
+					enemyManager.getEnemyList().push_back(new Patroler(100, 1, 0.2f, Vector2f(67 * j, 56 * i), 1));
 					break;
 
 
 				}
 				case '2':
+				{ //Patroler horison
+					auto soldj = make_unique<RectangleShape>(Vector2f(67, 56));
+					soldj->setPosition(Vector2f(67 * j, 56 * i));
+					soldj->setTexture(&txtSd);
+					soldj->setPosition(j * 67, i * 56);
+					vSol.emplace_back(move(soldj));
+
+
+
+
+					enemyManager.getEnemyList().push_back(new Patroler(100, 1, 0.2f, Vector2f(67 * j, 56 * i), 0));
+					break;
+
+
+				}
+				case '3':
 				{ //Chaser
 					auto soldj = make_unique<RectangleShape>(Vector2f(67, 56));
 					soldj->setPosition(Vector2f(67 * j, 56 * i));
@@ -296,24 +313,28 @@ void Map::DrawM(Player& p, View& v, string& currentMap) {
 					soldj->setPosition(j * 67, i * 56);
 					vSol.emplace_back(move(soldj));
 
-					auto chaser = make_shared<Chaser>(100, 1, 0.20f, Vector2f(67, 56));
-					chaser->setPos(Vector2f(67 *j, 56 * i));
-					vC.emplace_back(chaser);
+
+					enemyManager.getEnemyList().push_back(new Chaser(100, 1, 0.2f, Vector2f(67 * j, 56 * i)));
+
 					break;
 
 
 				}
-				//case '3':
-				//{ //Boss
-				//	auto soldj = make_unique<RectangleShape>(Vector2f(67, 56));
-				//	soldj->setPosition(Vector2f(67 * j, 56 * i));
-				//	soldj->setTexture(&txtSd);
-				//	soldj->setPosition(j * 67, i * 56);
-				//	vSol.emplace_back(move(soldj));
-				//	break;
+				case '4':
+				{ //Boss
+					auto soldj = make_unique<RectangleShape>(Vector2f(67, 56));
+					soldj->setPosition(Vector2f(67 * j, 56 * i));
+					soldj->setTexture(&txtSd);
+					soldj->setPosition(j * 67, i * 56);
+					vSol.emplace_back(move(soldj));
 
 
-				//}
+					Boss boss(1000, 10, 0.1f, Vector2f(300, 300));
+					/*vE.emplace_back(boss);*/
+					break;
+
+				}
+				
 				//case'V':
 				//{//popo vie
 				//auto soldj = make_unique<RectangleShape>(Vector2f(67, 56));
@@ -386,7 +407,7 @@ void Map::DrawM(Player& p, View& v, string& currentMap) {
 					auto vide = make_unique<RectangleShape>(Vector2f(67, 56));
 					vide->setFillColor(Color::Black);
 					vide->setPosition(Vector2f(67 * j, 56 * i));
-				vMur.emplace_back(move(vide));
+					vMur.emplace_back(move(vide));
 					break;
 
 
@@ -413,12 +434,11 @@ void Map::DrawM(Player& p, View& v, string& currentMap) {
 					
 
 					p.setPos(Vector2f(j* Width, i* Height));
-					p.setSpeed(0.35f);
 					break;
 				}
 				default: { //vide donjon
 					auto vide = make_unique<RectangleShape>(Vector2f(67, 56));
-					vide->setFillColor(Color::Red);
+					vide->setFillColor(Color::Black);
 					vide->setPosition(Vector2f(67 * j, 56 * i));
 					vMur.emplace_back(move(vide));
 					break;
@@ -431,33 +451,50 @@ void Map::DrawM(Player& p, View& v, string& currentMap) {
 		}
 		cMap = false;
 	}
-updatemap(v, p);
+updatemap(v, p,enemyManager);
 	
 }
 void Map::coliM(Player& p) {
 	for (auto& mur : vMur) {
-		if (p.getSprite().getGlobalBounds().intersects(mur->getGlobalBounds())) {
+		
+			if (p.getSprite().getGlobalBounds().intersects(mur->getGlobalBounds())) {
 
-			if (p.getPos().x > mur->getPosition().x) { //coli mur gauche
-				p.setPos(Vector2f(p.getPos().x + 3, p.getPos().y));
+				if (p.getPos().x > mur->getPosition().x) { //coli mur gauche
+					p.setPos(Vector2f(p.getPos().x + 3, p.getPos().y));
 
+				}
+
+				if (p.getPos().x < mur->getPosition().x) {//coli mur droit
+					p.setPos(Vector2f(p.getPos().x - 3, p.getPos().y));
+
+				}
+				if (p.getPos().y > mur->getPosition().y) {//coli mur du bas
+					p.setPos(Vector2f(p.getPos().x, p.getPos().y + 3));
+
+				}
+				if (p.getPos().y < mur->getPosition().y) {//coli mur haut
+					p.setPos(Vector2f(p.getPos().x, p.getPos().y - 3));
+
+				}
+				if (p.getPos().x > mur->getPosition().x and p.getPos().y > mur->getPosition().y) { //coli mur gauche
+					p.setPos(Vector2f(p.getPos().x + 2, p.getPos().y + 2));
+
+				}
+
+				if (p.getPos().x > mur->getPosition().x and p.getPos().y < mur->getPosition().y) {//coli mur droit
+					p.setPos(Vector2f(p.getPos().x + 2, p.getPos().y-2));
+
+				}
+				if (p.getPos().x < mur->getPosition().x and p.getPos().y > mur->getPosition().y) { //coli mur gauche
+					p.setPos(Vector2f(p.getPos().x - 2, p.getPos().y + 2));
+
+				}
+
+				if (p.getPos().x < mur->getPosition().x and p.getPos().y < mur->getPosition().y) {//coli mur droit
+					p.setPos(Vector2f(p.getPos().x - 2, p.getPos().y - 2));
+
+				}
 			}
-
-			if (p.getPos().x < mur->getPosition().x) {//coli mur droit
-				p.setPos(Vector2f(p.getPos().x - 3, p.getPos().y));
-
-			}
-			if (p.getPos().y > mur->getPosition().y) {//coli mur du bas
-				p.setPos(Vector2f(p.getPos().x, p.getPos().y + 3));
-
-			}
-			if (p.getPos().y < mur->getPosition().y) {//coli mur haut
-				p.setPos(Vector2f(p.getPos().x, p.getPos().y - 3));
-
-			}
-
-			
-		}
 	}
 	
 }
@@ -502,6 +539,36 @@ void Map::coliD(Player& p) {
 		}
 
 }
+void Map::coliE(EnemyManager& enemyManager) {
+	
+	for (auto& enemy : enemyManager.getEnemyList()) {
+		for (auto& mur : vMur) {
+			if (enemy == dynamic_cast<Chaser*>(enemy)) {
+				if (enemy->getSprite().getGlobalBounds().intersects(mur->getGlobalBounds())) {
+					if (enemy->getPos().x > mur->getPosition().x) { //coli mur gauche avec enemy 
+						enemy->setPos(Vector2f(enemy->getPos().x + 3, enemy->getPos().y));
+
+					}
+
+					if (enemy->getPos().x < mur->getPosition().x) {//coli mur droit avec enemy 
+						enemy->setPos(Vector2f(enemy->getPos().x - 3, enemy->getPos().y));
+
+					}
+					if (enemy->getPos().y > mur->getPosition().y) {//coli mur bas avec enemy 
+						enemy->setPos(Vector2f(enemy->getPos().x, enemy->getPos().y + 3));
+
+					}
+					if (enemy->getPos().y < mur->getPosition().y) {//coli mur haut avec enemy 
+						enemy->setPos(Vector2f(enemy->getPos().x, enemy->getPos().y - 3));
+
+					}
+				}
+			}
+		}
+	}
+
+
+}
 void Map::tpTxt(Player& p) {
 	for (auto& tp : vTp) {
 		if (tp->getGlobalBounds().intersects(p.getSprite().getGlobalBounds())) {
@@ -514,11 +581,16 @@ void Map::tpTxt(Player& p) {
 
 }
 void Map::pnjTxt(Player& p) {
+	RectangleShape hitbox(Vector2f(200, 200));
+	
 	for (auto& pnj : vPnj) {
 			inetractPnj.setPosition(vPnj[0]->getPosition().x+30, vPnj[0]->getPosition().y-30);
 			interactTp.setPosition(vPnj[0]->getPosition().x + 28 , vPnj[0]->getPosition().y+25);
+			hitbox.setPosition(pnj->getPosition().x-50, pnj->getPosition().y-20);
+			hitbox.setFillColor(Color(0,0 , 0, 0));
+			utilitaire.emplace_back(hitbox);
 		if (p.getSprite().getGlobalBounds().intersects(pnj->getGlobalBounds())) {
-
+			
 			if (p.getPos().x > pnj->getPosition().x) {
 				p.setPos(Vector2f(p.getPos().x + 3, p.getPos().y));
 
@@ -542,18 +614,27 @@ void Map::pnjTxt(Player& p) {
 		if (iPNJ != true) {
 		window.draw(inetractPnj);
 		}
-		/*if () {
-			window.draw(interactTp);
-
+		if (hitbox.getGlobalBounds().intersects(p.getSprite().getGlobalBounds())) {
+		 window.draw(interactTp);
+		 if (Keyboard::isKeyPressed(Keyboard::E)) {
+			 DialPnj(p);
+			 iPNJ = true;
+		 }
 		}
-		*/
+		
+		window.draw(hitbox);
 	}
 
 }
 void Map::DialPnj(Player& p) {
+	for (auto& pnj : vPnj) {
+		dialogueAc.setPosition(pnj->getPosition().x-10, pnj->getPosition().y-15);
+		isDialogueActive = true;
+		
 
+	}
 }
-void Map::updatemap(View& v, Player& p) {
+void Map::updatemap(View& v, Player& p, EnemyManager& enemyManager) {
 	coliKey(p);
 	coliD(p);
 	for (auto& sol : vSol) {
@@ -574,18 +655,22 @@ void Map::updatemap(View& v, Player& p) {
 	for (auto& porte : dD) {
 		window.draw(*porte);
 	}
-	/*for (auto& chaser : vC) {
-		window.draw(chaser->);
+	for (auto& enemy : enemyManager.getEnemyList()) {
+		enemy->update(deltaTime,p);
 	}
-	for (auto& patrol : vP) {
-		window.draw(patrol->);
-	}*/
 	if(Keyrecup!= true){
 		for (auto& key : vKey) {
 			window.draw(*key);
 		}
 	}
-	
+	if (isDialogueActive == true) {
+		window.draw(dialogueAc);
+	}
+	if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+		isDialogueActive = false;
+		utilitaire.clear();
+	}
+	coliE(enemyManager);
 	tpTxt(p);
 	pnjTxt(p);
 	coliM(p);

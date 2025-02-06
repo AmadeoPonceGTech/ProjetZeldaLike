@@ -13,7 +13,7 @@ Chaser::Chaser(int health, int damage, float speed, Vector2f pos) : Enemy(health
     }
 
     sprite.setTexture(textureWalk);
-    sprite.setScale(Vector2f(4, 4));
+    sprite.setScale(Vector2f(3,3));
 }
 
 void Chaser::update(float deltaTime, Player& p)
@@ -46,7 +46,7 @@ void Chaser::movement(float deltaTime, Player& p)
         else { orientation = 90; }
 
     }
-    if (canMove)
+    if (canMove && sqrt((pPos.x - pos.x) * (pPos.x - pos.x) + (pPos.y - pos.y) * (pPos.y - pos.y)) < playerDetectionDistance)
     {
         setPos(Vector2f(pos.x + dx, pos.y + dy));
     }
@@ -56,6 +56,7 @@ void Chaser::movement(float deltaTime, Player& p)
         setPos(Vector2f(pos.x - dx*3, pos.y - dy*3));
     }
 }
+
 
 
 

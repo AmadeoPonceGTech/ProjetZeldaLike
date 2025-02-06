@@ -148,11 +148,17 @@
   <ItemGroup>
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="bossBullet.cpp" />
+    <ClCompile Include="coin.cpp" />
+    <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="inventaire.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClInclude Include="Boss.h" />
     <ClInclude Include="bossBullet.h" />
+    <ClInclude Include="coin.h" />
+    <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="inventaire.h" />
     <ClInclude Include="Map.h" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemyChaser.cpp" />

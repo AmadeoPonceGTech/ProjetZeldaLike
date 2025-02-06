@@ -1,8 +1,6 @@
 #pragma once
 #include "enemy.h"
 #include "player.h"
-
-
 #include <chrono>
 #include <iostream>
 
@@ -16,10 +14,9 @@ private:
 	int intDir;
 public:
 
+
 	Clock clockHit;	
 	bool getHit = false;
-
-	RectangleShape sprite;
 
 	Patroler(int health, int damage, float s, Vector2f p, int iD);
 

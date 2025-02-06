@@ -1,19 +1,23 @@
 #pragma once
 #include <iostream>
 #include <vector>
-
-#include "Entity.h"
-
+#include <SFML/Graphics/View.hpp>
+#define _USE_MATH_DEFINES
 #include <math.h>
 
+#include "Entity.h"
+#include "enemy.h"
+//#include "Boss.h"
+
 class Enemy;
+class Boss;
 
 class Player : public Entity
 {
 private:
 	void move(float deltaTime);
 
-	void attack(float deltaTime, vector<Enemy*> ennemy);
+	void attack(float deltaTime, vector<Enemy*> ennemy, Boss boss);
 	void animationUpdate(float deltaTime);
 
 	Texture weapon1;
@@ -53,9 +57,10 @@ public:
 
 	bool buff = true;
 	void usePowerUp();
-	void update(float deltaTime, vector<Enemy*> p);
+	void update(float deltaTime, vector<Enemy*> p, Boss boss);
 
 	Sprite& getSprite();
+	Sprite& getweaponSprite();
 	void setWeaponOrientation();
 
 };

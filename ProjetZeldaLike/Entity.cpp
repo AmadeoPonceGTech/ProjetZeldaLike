@@ -55,7 +55,7 @@ int Entity::getHealth()
 	return health;
 }
 
-Sprite Entity::getSprite()
-{
-	return Sprite();
-}
+//Sprite Entity::getSprite()
+//{
+//	return sprite;
+//}

@@ -10,7 +10,7 @@ void BossBullet::update(float deltaTime, Player& p)
 {
     time += deltaTime;
 
-    Vector2f pPos = p.getPos();
+    Vector2f pPos = Vector2f(p.getPos().x + (p.getSprite().getLocalBounds().width/2), p.getPos().y + (p.getSprite().getLocalBounds().height / 2));
     float targetAngle = atan2(pPos.y - pos.y, pPos.x - pos.x);
 
     float angleDiff = targetAngle - realOrientation;

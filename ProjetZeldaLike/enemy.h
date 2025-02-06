@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Entity.h";
 #include "player.h";
 
@@ -26,6 +25,7 @@ public:
 	float attackDuration = 1000.0f;
 	float timeSinceLastAttack = 0;
 	bool canMove = true;
+	bool isPlayerRed = false;
 
 	float stuntTime = 0;
 
@@ -44,6 +44,8 @@ public:
 
 	void giveStunt(float time);
 	void stuntManager(float deltaTime);
+	
+	Sprite& getSprite();
 
 
 };

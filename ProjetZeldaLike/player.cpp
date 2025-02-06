@@ -1,12 +1,5 @@
-#include <iostream>
-#include <vector>
-#define _USE_MATH_DEFINES
-#include <math.h>
-
 #include "player.h"
-#include "enemy.h"
-#include <SFML/Graphics/View.hpp>
-
+#include "Boss.h"
 using namespace sf;
 using namespace std;
 
@@ -31,16 +24,15 @@ Player::Player(int health, int dmg, float s, Vector2f p) : Entity(health, dmg, s
     }
 
     sprite.setTexture(textureIdle);
-    sprite.setScale(Vector2f(4, 4));
 
     weaponSprite.setTexture(weapon1);
-    weaponSprite.setScale(Vector2f(4, 4));
+    weaponSprite.setScale(Vector2f(3, 3));
 }
 
-void Player::update(float deltaTime, vector<Enemy*> p)
+void Player::update(float deltaTime, vector<Enemy*> p, Boss boss)
 {
     move(deltaTime);
-    attack(deltaTime, p);
+    attack(deltaTime, p, boss);
     animationUpdate(deltaTime);
 }
 
@@ -138,7 +130,6 @@ void Player::move(float deltaTime)
     }
 }
 
-
 bool isInside(Vector2f edges[4], Vector2f posPoint) {
     int count = 0;
     for (int i = 0; i < 4; i++) {
@@ -156,7 +147,7 @@ bool isInside(Vector2f edges[4], Vector2f posPoint) {
     return count % 2 == 1;
 }
 
-void Player::attack(float deltaTime, vector<Enemy*> ennemy)
+void Player::attack(float deltaTime, vector<Enemy*> ennemy, Boss boss)
 {
     timeSinceLastAttack += deltaTime;
     if (timeSinceLastAttack > attackDuration)
@@ -181,12 +172,16 @@ void Player::attack(float deltaTime, vector<Enemy*> ennemy)
 
                 for (auto e : ennemy)
                 {
-                    cout << e->getHealth() << endl;
                     if (isInside(attackHitBox, e->getPos()))
                     {
                         e->takeHit(getDamage());
                         e->giveStunt(100.f);
                     }
+                }
+                if (isInside(attackHitBox, boss.getSprite().getPosition()))
+                {
+                    boss.BossHit(damage);
+                    cout << damage;
                 }
             }
         }
@@ -220,6 +215,11 @@ void Player::draw(RenderWindow& window, View& view)
 Sprite& Player::getSprite()
 {
     return sprite;
+}
+
+Sprite& Player::getweaponSprite()
+{
+    return weaponSprite;
 }
 
 void Player::setWeaponOrientation()

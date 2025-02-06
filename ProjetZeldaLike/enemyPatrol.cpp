@@ -15,8 +15,8 @@ Patroler::Patroler(int health, int damage, float speed, Vector2f pos, int iD) : 
 		throw std::runtime_error("Erreur de chargement de la texture (chaser dead)");
 	}
 
-	sprite.setTexture(&textureWalk);
-	sprite.setScale(Vector2f(4, 4));
+	sprite.setTexture(textureWalk);
+	sprite.setScale(Vector2f(3, 3));
 	
 	intDir = iD;
 }
@@ -86,7 +86,6 @@ void Patroler::moveVer3s(float deltaTime)
 void Patroler::hitColor()
 {
 	health += -damage;
-	sprite.setFillColor(Color::Red);
 	clockHit.restart();
 	getHit = true;
 }
