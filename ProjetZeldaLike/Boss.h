@@ -37,6 +37,8 @@ public:
 
 	float timer = 0;
 
+	float timeSinceLastHit = 0;
+
 	Vector2f targetPosition;
 
 	Vector2i bossRoomSize = Vector2i(500, 500);
