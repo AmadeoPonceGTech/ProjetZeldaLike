@@ -20,7 +20,7 @@ void Game::run()
 	EnemyManager enemyManager;
 	Boss boss(1000, 10, 0.1f, Vector2f(300, 300));
 	Map mapp(window);
-	Coin coin(Vector2f(200, 200));
+	/*Coin coin(Vector2f(200, 200));*/
 	PotionDMG pot({ 150,150 });
 
 	mapp.initall();
@@ -41,14 +41,14 @@ void Game::run()
 		boss.update(deltaTime, player);
 
 		mapp.eDonj(player,view,currentMap);
-		mapp.DrawM(player, view,currentMap, enemyManager);
+		mapp.DrawM(player, view,currentMap, enemyManager,boss);
 
 		player.draw(window, view);
 		enemyManager.draw(window, view);
 		boss.draw(window, view);
-		coin.update(deltaTime);
-		coin.draw(window);
-		pot.draw(window);
+		/*coin.update(deltaTime);
+		coin.draw(window);*/
+		/*pot.draw(window);*/
 		pot.itemEffect(player);
 
 		window.setView(view);

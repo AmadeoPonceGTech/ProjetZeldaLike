@@ -16,6 +16,7 @@ private:
 	string currentMap = "Assets/hub.txt";
 public:
 	RenderWindow window;
+	
 	View view;
 	Clock clock;
 	float deltaTime;

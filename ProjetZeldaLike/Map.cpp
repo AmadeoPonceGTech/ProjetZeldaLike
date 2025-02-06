@@ -119,7 +119,7 @@ void Map::initM(string fileM) {
 	file.close();
 	cMap = true;
 }
-void Map::DrawM(Player& p, View& v, string& currentMap, EnemyManager& enemyManager) {
+void Map::DrawM(Player& p, View& v, string& currentMap, EnemyManager& enemyManager,Boss& boss) {
 	try {
 	if (vM[0].empty()) {
 			throw runtime_error("le fichier texte est vide");
@@ -329,13 +329,14 @@ void Map::DrawM(Player& p, View& v, string& currentMap, EnemyManager& enemyManag
 					vSol.emplace_back(move(soldj));
 
 
-					Boss boss(1000, 10, 0.1f, Vector2f(300, 300));
-					/*vE.emplace_back(boss);*/
+					boss.setPos(Vector2f(67 * j, 56 * i));
+					boss.targetPosition = Vector2f(boss.getPos().x, boss.getPos().y) ;
+					boss.bossRoomSize =(Vector2i(500,150));
 					break;
 
 				}
 				
-				//case'V':
+				/*case'V':*/
 				//{//popo vie
 				//auto soldj = make_unique<RectangleShape>(Vector2f(67, 56));
 				//soldj->setPosition(Vector2f(67 * j, 56 * i));
@@ -344,15 +345,13 @@ void Map::DrawM(Player& p, View& v, string& currentMap, EnemyManager& enemyManag
 				//vSol.emplace_back(move(soldj));
 
 
-				//auto pp_vie = make_unique<RectangleShape>(Vector2f(67, 54));
-				//pp_vie->setPosition(Vector2f(67 * j, 54 * i));
-				//pp_vie->setTexture(&txtPp_vie);
-				//pp_vie->setPosition(j * Width, i * Height);
-				//vTp.emplace_back(move(pp_vie));//changer le vecteur pour les popo
+				//
+				//vPP.push_back(Potion(Vector2f(67 * j, 56 * i)));//changer le vecteur pour les popo
 				//break;
 
 
 				//}
+				/*Coin coin(Vector2f(200, 200));*/
 				case 'h':
 				{ //mur donjon
 
@@ -402,6 +401,7 @@ void Map::DrawM(Player& p, View& v, string& currentMap, EnemyManager& enemyManag
 
 
 				}
+				
 				case ' ':
 				{ //vide donjon
 					auto vide = make_unique<RectangleShape>(Vector2f(67, 56));
@@ -451,7 +451,7 @@ void Map::DrawM(Player& p, View& v, string& currentMap, EnemyManager& enemyManag
 		}
 		cMap = false;
 	}
-updatemap(v, p,enemyManager, currentMap);
+updatemap(v, p,enemyManager, currentMap,boss);
 	
 }
 void Map::coliM(Player& p) {
@@ -539,10 +539,11 @@ void Map::coliD(Player& p) {
 		}
 
 }
-void Map::coliE(EnemyManager& enemyManager) {
+void Map::coliE(EnemyManager& enemyManager,Boss& boss) {
 	
 	for (auto& enemy : enemyManager.getEnemyList()) {
 		for (auto& mur : vMur) {
+
 			if (enemy == dynamic_cast<Chaser*>(enemy)) {
 				if (enemy->getSprite().getGlobalBounds().intersects(mur->getGlobalBounds())) {
 					if (enemy->getPos().x > mur->getPosition().x) { //coli mur gauche avec enemy 
@@ -562,12 +563,33 @@ void Map::coliE(EnemyManager& enemyManager) {
 						enemy->setPos(Vector2f(enemy->getPos().x, enemy->getPos().y - 3));
 
 					}
+
 				}
 			}
+			
+			//if (boss.getSprite().getGlobalBounds().intersects(mur->getGlobalBounds())) {
+			//	if (boss.getPos().x > mur->getPosition().x) { //coli mur gauche avec enemy 
+			//		boss.setPos(Vector2f(boss.getPos().x + 3, boss.getPos().y));
+
+			//	}
+
+			//	if (boss.getPos().x < mur->getPosition().x) {//coli mur droit avec enemy 
+			//		boss.setPos(Vector2f(boss.getPos().x - 3, boss.getPos().y));
+
+			//	}
+			//	if (boss.getPos().y > mur->getPosition().y) {//coli mur bas avec enemy 
+			//		boss.setPos(Vector2f(boss.getPos().x, boss.getPos().y + 3));
+
+			//	}
+			//	if (boss.getPos().y < mur->getPosition().y) {//coli mur haut avec enemy 
+			//		boss.setPos(Vector2f(boss.getPos().x, boss.getPos().y - 3));
+
+			//	}
+
+			//}
 		}
+
 	}
-
-
 }
 void Map::tpTxt(Player& p) {
 	for (auto& tp : vTp) {
@@ -634,7 +656,7 @@ void Map::DialPnj(Player& p) {
 
 	}
 }
-void Map::updatemap(View& v, Player& p, EnemyManager& enemyManager, string& currentMap) {
+void Map::updatemap(View& v, Player& p, EnemyManager& enemyManager, string& currentMap, Boss& boss) {
 	coliKey(p);
 	coliD(p);
 	for (auto& sol : vSol) {
@@ -663,6 +685,9 @@ void Map::updatemap(View& v, Player& p, EnemyManager& enemyManager, string& curr
 			window.draw(*key);
 		}
 	}
+	//for (auto& popo : vPP) {
+	//	popo.draw(window);
+	//}
 	if (isDialogueActive == true and currentMap == "Assets/hub.txt" ) {
 		window.draw(dialogueAc);
 	}
@@ -670,7 +695,7 @@ void Map::updatemap(View& v, Player& p, EnemyManager& enemyManager, string& curr
 		isDialogueActive = false;
 		utilitaire.clear();
 	}
-	coliE(enemyManager);
+	coliE(enemyManager,boss);
 	tpTxt(p);
 	pnjTxt(p);
 	coliM(p);

@@ -2,7 +2,7 @@
 #include "player.h"
 #include "bossBullet.h"
 
-class Boss : Entity
+class Boss : public Entity
 {
 public:
 
@@ -41,7 +41,7 @@ public:
 
 	Vector2f targetPosition;
 
-	Vector2i bossRoomSize = Vector2i(500, 500);
+	Vector2i bossRoomSize = Vector2i(100, 100);
 
 	Boss(int h, int d, float s, Vector2f p);
 
@@ -55,4 +55,5 @@ public:
 	void draw(RenderWindow& window, View& view) override;
 	Sprite& getSprite();
 	void BossHit(int dmg);
+	
 };

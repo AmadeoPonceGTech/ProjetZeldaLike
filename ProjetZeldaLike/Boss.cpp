@@ -86,7 +86,7 @@ void Boss::move(float deltaTime)
 
 	if (abs(pos.x - targetPosition.x) < 5 && abs(pos.y - targetPosition.y) < 5) {
 
-		targetPosition = Vector2f(rand() % bossRoomSize.x, rand() % bossRoomSize.y);
+		targetPosition = Vector2f((rand() % bossRoomSize.x)+800, (rand() % bossRoomSize.y)+ 1300);
 	}
 
 
@@ -134,5 +134,4 @@ Sprite& Boss::getSprite()
 {
 	return bossSprite;
 }
-
 
