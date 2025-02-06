@@ -30,9 +30,11 @@ void PotionDMG::itemEffect(Player& player_)
 	FloatRect playerbounds = player_.getSprite().getGlobalBounds();
 	FloatRect itembound = potDMG.getGlobalBounds();
 
-	if (playerbounds.intersects(itembound))
+	if (playerbounds.intersects(itembound) && activePotDMG == true)
 	{
 		activePotDMG = false;
 		player_.usePowerUp();
 	}
 }
+
+

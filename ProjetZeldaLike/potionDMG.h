@@ -20,4 +20,5 @@ public:
 	void draw(RenderWindow& game) override;
 	void itmget() override;
 	void itemEffect(Player& player_) override;
+
 };

@@ -95,7 +95,6 @@ void Enemy::attack(float deltaTime, Player& p)
 
         animState = "Walk";
 
-        p.getSprite().setColor(Color::White);
         isPlayerRed = false;
         if (abs(pPos.x - pos.x) + abs(pPos.y - pos.y) < 50)
         {

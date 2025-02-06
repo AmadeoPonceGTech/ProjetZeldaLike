@@ -7,7 +7,6 @@
 
 #include "Entity.h"
 #include "enemy.h"
-//#include "Boss.h"
 
 class Enemy;
 class Boss;
@@ -17,7 +16,7 @@ class Player : public Entity
 private:
 	void move(float deltaTime);
 
-	void attack(float deltaTime, vector<Enemy*> ennemy, Boss boss);
+	void attack(float deltaTime, vector<Enemy*> ennemy, Boss& boss);
 	void animationUpdate(float deltaTime);
 
 	Texture weapon1;
@@ -48,6 +47,8 @@ private:
 	float timeSinceLastAttack = 0;
 	bool canMove = true;
 
+
+	Clock buffTimer;
 public:
 	bool attackstate = false;
 
@@ -57,7 +58,7 @@ public:
 
 	bool buff = true;
 	void usePowerUp();
-	void update(float deltaTime, vector<Enemy*> p, Boss boss);
+	void update(float deltaTime, vector<Enemy*> p, Boss& boss);
 
 	Sprite& getSprite();
 	Sprite& getweaponSprite();
